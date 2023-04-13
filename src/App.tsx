@@ -1,10 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { useMachine } from "@xstate/react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { promiseMachine } from "./state-machines/promiseMachine";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [state, send] = useMachine(promiseMachine);
 
   return (
     <div className="App">
@@ -28,8 +31,18 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+
+      <div>
+        {state.matches("pending") && <p>Loading...</p>}
+        {state.matches("rejected") && <p>Promise Rejected</p>}
+        {state.matches("resolved") && <p>Promise Resolved</p>}
+        <div>
+          <button onClick={() => send("RESOLVE")}>Resolve</button>
+          <button onClick={() => send("REJECT")}>Reject</button>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
