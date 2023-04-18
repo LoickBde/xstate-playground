@@ -5,6 +5,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { promiseMachine } from "./machines/promiseMachine";
 import { clickMachine } from "./machines/clickMachine";
+import { Todos } from "./components/Todos";
 
 function App() {
   const [statePromise, sendPromise] = useMachine(promiseMachine);
@@ -20,6 +21,8 @@ function App() {
       <hr />
       <p>{JSON.stringify(stateClick.value)}</p>
       <button onClick={() => sendClick("PRESS")}>Press button</button>
+      <hr />
+      <Todos />
     </div>
   );
 }
