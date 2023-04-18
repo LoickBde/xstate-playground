@@ -3,44 +3,23 @@ import { useMachine } from "@xstate/react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { promiseMachine } from "./state-machines/promiseMachine";
+import { promiseMachine } from "./machines/promiseMachine";
+import { clickMachine } from "./machines/clickMachine";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [state, send] = useMachine(promiseMachine);
+  const [statePromise, sendPromise] = useMachine(promiseMachine);
+  const [stateClick, sendClick] = useMachine(clickMachine);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-
-      <div>
-        {state.matches("pending") && <p>Loading...</p>}
-        {state.matches("rejected") && <p>Promise Rejected</p>}
-        {state.matches("resolved") && <p>Promise Resolved</p>}
-        <div>
-          <button onClick={() => send("RESOLVE")}>Resolve</button>
-          <button onClick={() => send("REJECT")}>Reject</button>
-        </div>
-      </div>
+      {statePromise.matches("pending") && <p>Loading...</p>}
+      {statePromise.matches("rejected") && <p>Promise Rejected</p>}
+      {statePromise.matches("resolved") && <p>Promise Resolved</p>}
+      <button onClick={() => sendPromise("RESOLVE")}>Resolve</button>
+      <button onClick={() => sendPromise("REJECT")}>Reject</button>
+      <hr />
+      <p>{JSON.stringify(stateClick.value)}</p>
+      <button onClick={() => sendClick("PRESS")}>Press button</button>
     </div>
   );
 }

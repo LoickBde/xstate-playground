@@ -1,5 +1,5 @@
 import { interpret } from "xstate";
-import { promiseMachine } from "./state-machines/promiseMachine";
+import { promiseMachine } from "./machines/promiseMachine";
 
 const promiseService = interpret(promiseMachine).onTransition((state) =>
   console.log(state.value)
