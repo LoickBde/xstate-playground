@@ -2,7 +2,13 @@ import { useMachine } from "@xstate/react";
 import { todosMachine } from "../../machines/todosMachine";
 
 export const Todos = () => {
-  const [stateTodos, sendTodos] = useMachine(todosMachine);
+  const [stateTodos, sendTodos] = useMachine(todosMachine, {
+    services: {
+      loadTodos: async () => {
+        return ["Learn xtstate", "Drink beers"];
+      },
+    },
+  });
   return (
     <>
       <h2>Todos</h2>

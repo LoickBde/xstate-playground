@@ -1,32 +1,37 @@
 import { createMachine } from "xstate";
 
-export const todosMachine = createMachine(
-  {
-    id: "todos",
-    predictableActionArguments: true,
-    initial: "loadingTodos",
-    schema: {
-      events: {} as
-        | { type: "loadingTodosCompleted"; todos: string[] }
-        | { type: "loadingTodosFailed"; errorMessage: string },
-    },
-    tsTypes: {} as import("./todosMachine.typegen").Typegen0,
-    states: {
-      loadingTodos: {
-        on: {
-          loadingTodosCompleted: { target: "todosLoaded", actions: "logTodos" },
-          loadingTodosFailed: { target: "todosFailed" },
-        },
-      },
-      todosLoaded: {},
-      todosFailed: {},
+export const todosMachine = createMachine({
+  id: "todos",
+  predictableActionArguments: true,
+  initial: "loadingTodos",
+  schema: {
+    // events: {} as
+    //   | { type: "loadingTodosCompleted"; todos: string[] }
+    //   | { type: "loadingTodosFailed"; errorMessage: string },
+    services: {} as {
+      loadTodos: {
+        data: string[];
+      };
     },
   },
-  {
-    actions: {
-      logTodos: (context, event) => {
-        console.log(JSON.stringify(event.todos));
+  tsTypes: {} as import("./todosMachine.typegen").Typegen0,
+  states: {
+    loadingTodos: {
+      invoke: {
+        src: "loadTodos",
+        onDone: [
+          {
+            target: "todosLoaded",
+          },
+        ],
+        onError: [
+          {
+            target: "todosFailed",
+          },
+        ],
       },
     },
-  }
-);
+    todosLoaded: {},
+    todosFailed: {},
+  },
+});
