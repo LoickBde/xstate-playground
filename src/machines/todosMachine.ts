@@ -14,10 +14,17 @@ export const todosMachine = createMachine(
           data: string[];
         };
       },
+      events: {} as
+        | { type: "CREATE_NEW" }
+        | {
+            type: "FORM_INPUT_CHANGED";
+            value: string;
+          },
     },
     context: {
       todos: [] as string[],
       errorMessage: undefined as string | undefined,
+      newTodoFormInput: "",
     },
     initial: "loadingTodos",
     states: {
@@ -38,8 +45,25 @@ export const todosMachine = createMachine(
           ],
         },
       },
-      todosLoaded: {},
+      todosLoaded: {
+        on: {
+          CREATE_NEW: { target: "creatingTodos" },
+        },
+      },
       todosFailed: {},
+      creatingTodos: {
+        initial: "displayFormInput",
+        states: {
+          displayFormInput: {
+            on: {
+              FORM_INPUT_CHANGED: {
+                target: "displayFormInput",
+                actions: "assignNewTodoToCtx",
+              },
+            },
+          },
+        },
+      },
     },
   },
   {
@@ -52,6 +76,11 @@ export const todosMachine = createMachine(
       assignErrorToContext: assign((context, event) => {
         return {
           errorMessage: (event.data as Error).message,
+        };
+      }),
+      assignNewTodoToCtx: assign((context, event) => {
+        return {
+          newTodoFormInput: event.value,
         };
       }),
     },

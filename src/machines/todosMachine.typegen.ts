@@ -25,6 +25,7 @@ export interface Typegen0 {
   };
   eventsCausingActions: {
     assignErrorToContext: "error.platform.todos.loadingTodos:invocation[0]";
+    assignNewTodoToCtx: "FORM_INPUT_CHANGED";
     assignTodosToContext: "done.invoke.todos.loadingTodos:invocation[0]";
   };
   eventsCausingDelays: {};
@@ -32,6 +33,12 @@ export interface Typegen0 {
   eventsCausingServices: {
     loadTodos: "xstate.init";
   };
-  matchesStates: "loadingTodos" | "todosFailed" | "todosLoaded";
+  matchesStates:
+    | "creatingTodos"
+    | "creatingTodos.displayFormInput"
+    | "loadingTodos"
+    | "todosFailed"
+    | "todosLoaded"
+    | { creatingTodos?: "displayFormInput" };
   tags: never;
 }
