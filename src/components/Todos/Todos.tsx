@@ -13,7 +13,7 @@ export const Todos = () => {
         todos.add(context.newTodoFormInput);
       },
       deleteTodo: async (context, event) => {
-        console.log(event.todo);
+        throw new Error("throwing error manually");
         todos.delete(event.todo);
       },
     },
@@ -24,29 +24,33 @@ export const Todos = () => {
       <p>State machine: {JSON.stringify(stateTodos.value)}</p>
       <p>Ctx machine: {JSON.stringify(stateTodos.context)}</p>
       <div>
-        {/* {stateTodos.context.todos.map(todo => {})} */}
-        {stateTodos.context.todos.map((todo) => {
-          return (
-            <div key={todo} style={{ display: "flex", alignItems: "center" }}>
-              <p>{todo}</p>
-              <button
-                onClick={() => {
-                  sendTodos({
-                    type: "DELETE",
-                    todo: todo,
-                  });
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          );
-        })}
-
         {stateTodos.matches("todosLoaded") && (
-          <button onClick={() => sendTodos({ type: "CREATE_NEW" })}>
-            Create new
-          </button>
+          <>
+            {stateTodos.context.todos.map((todo) => {
+              return (
+                <div
+                  key={todo}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <p>{todo}</p>
+                  <button
+                    onClick={() => {
+                      sendTodos({
+                        type: "DELETE",
+                        todo: todo,
+                      });
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              );
+            })}
+
+            <button onClick={() => sendTodos({ type: "CREATE_NEW" })}>
+              Create new
+            </button>
+          </>
         )}
         {stateTodos.matches("creatingTodos.displayFormInput") && (
           <form
@@ -66,6 +70,18 @@ export const Todos = () => {
               }}
             ></input>
           </form>
+        )}
+        {stateTodos.matches("deletingTodoError") && (
+          <>
+            <p>Something went wrong - {stateTodos.context.errorMessage}</p>
+            <button
+              onClick={() => {
+                sendTodos({ type: "GO_BACK_TO_LIST" });
+              }}
+            >
+              Go back to list
+            </button>
+          </>
         )}
       </div>
     </>

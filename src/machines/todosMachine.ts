@@ -32,6 +32,9 @@ export const todosMachine = createMachine(
         | {
             type: "DELETE";
             todo: string;
+          }
+        | {
+            type: "GO_BACK_TO_LIST";
           },
     },
     context: {
@@ -114,7 +117,18 @@ export const todosMachine = createMachine(
           ],
         },
       },
-      deletingTodoError: {},
+      deletingTodoError: {
+        after: {
+          "2500": {
+            target: "todosLoaded",
+          },
+        },
+        on: {
+          GO_BACK_TO_LIST: {
+            target: "todosLoaded",
+          },
+        },
+      },
     },
   },
   {

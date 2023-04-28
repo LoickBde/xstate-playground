@@ -30,6 +30,9 @@ export interface Typegen0 {
       type: "error.platform.todos.loadingTodos:invocation[0]";
       data: unknown;
     };
+    "xstate.after(2500)#todos.deletingTodoError": {
+      type: "xstate.after(2500)#todos.deletingTodoError";
+    };
     "xstate.init": { type: "xstate.init" };
   };
   invokeSrcNameMap: {
