@@ -14,15 +14,24 @@ export const todosMachine = createMachine(
         saveTodo: {
           data: void;
         };
+        deleteTodo: {
+          data: void;
+        };
       },
       events: {} as
-        | { type: "CREATE_NEW" }
+        | {
+            type: "CREATE_NEW";
+          }
         | {
             type: "FORM_INPUT_CHANGED";
             value: string;
           }
         | {
             type: "SUBMIT";
+          }
+        | {
+            type: "DELETE";
+            todo: string;
           },
     },
     context: {
@@ -52,6 +61,7 @@ export const todosMachine = createMachine(
       todosLoaded: {
         on: {
           CREATE_NEW: { target: "creatingTodos" },
+          DELETE: { target: "deletingTodo" },
         },
       },
       todosFailed: {},
@@ -88,6 +98,23 @@ export const todosMachine = createMachine(
           },
         },
       },
+      deletingTodo: {
+        invoke: {
+          src: "deleteTodo",
+          onDone: [
+            {
+              target: "loadingTodos",
+            },
+          ],
+          onError: [
+            {
+              target: "deletingTodoError",
+              actions: "assignErrorToContext",
+            },
+          ],
+        },
+      },
+      deletingTodoError: {},
     },
   },
   {

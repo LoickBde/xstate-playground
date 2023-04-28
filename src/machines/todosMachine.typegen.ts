@@ -8,6 +8,11 @@ export interface Typegen0 {
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
     };
+    "done.invoke.todos.deletingTodo:invocation[0]": {
+      type: "done.invoke.todos.deletingTodo:invocation[0]";
+      data: unknown;
+      __tip: "See the XState TS docs to learn how to strongly type this.";
+    };
     "done.invoke.todos.loadingTodos:invocation[0]": {
       type: "done.invoke.todos.loadingTodos:invocation[0]";
       data: unknown;
@@ -17,6 +22,10 @@ export interface Typegen0 {
       type: "error.platform.todos.creatingTodos.savingTodo:invocation[0]";
       data: unknown;
     };
+    "error.platform.todos.deletingTodo:invocation[0]": {
+      type: "error.platform.todos.deletingTodo:invocation[0]";
+      data: unknown;
+    };
     "error.platform.todos.loadingTodos:invocation[0]": {
       type: "error.platform.todos.loadingTodos:invocation[0]";
       data: unknown;
@@ -24,6 +33,7 @@ export interface Typegen0 {
     "xstate.init": { type: "xstate.init" };
   };
   invokeSrcNameMap: {
+    deleteTodo: "done.invoke.todos.deletingTodo:invocation[0]";
     loadTodos: "done.invoke.todos.loadingTodos:invocation[0]";
     saveTodo: "done.invoke.todos.creatingTodos.savingTodo:invocation[0]";
   };
@@ -31,11 +41,12 @@ export interface Typegen0 {
     actions: never;
     delays: never;
     guards: never;
-    services: "loadTodos" | "saveTodo";
+    services: "deleteTodo" | "loadTodos" | "saveTodo";
   };
   eventsCausingActions: {
     assignErrorToContext:
       | "error.platform.todos.creatingTodos.savingTodo:invocation[0]"
+      | "error.platform.todos.deletingTodo:invocation[0]"
       | "error.platform.todos.loadingTodos:invocation[0]";
     assignNewTodoToCtx: "FORM_INPUT_CHANGED";
     assignTodosToContext: "done.invoke.todos.loadingTodos:invocation[0]";
@@ -44,8 +55,10 @@ export interface Typegen0 {
   eventsCausingDelays: {};
   eventsCausingGuards: {};
   eventsCausingServices: {
+    deleteTodo: "DELETE";
     loadTodos:
       | "done.invoke.todos.creatingTodos.savingTodo:invocation[0]"
+      | "done.invoke.todos.deletingTodo:invocation[0]"
       | "xstate.init";
     saveTodo: "SUBMIT";
   };
@@ -53,6 +66,8 @@ export interface Typegen0 {
     | "creatingTodos"
     | "creatingTodos.displayFormInput"
     | "creatingTodos.savingTodo"
+    | "deletingTodo"
+    | "deletingTodoError"
     | "loadingTodos"
     | "todosFailed"
     | "todosLoaded"
