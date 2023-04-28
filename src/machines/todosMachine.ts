@@ -51,6 +51,10 @@ export const todosMachine = createMachine(
             {
               target: "todosLoaded",
               actions: "assignTodosToContext",
+              cond: "hasTodos",
+            },
+            {
+              target: "creatingTodos",
             },
           ],
           onError: [
@@ -132,6 +136,11 @@ export const todosMachine = createMachine(
     },
   },
   {
+    guards: {
+      hasTodos: (context, event) => {
+        return event.data.length > 0;
+      },
+    },
     actions: {
       assignTodosToContext: assign((context, event) => {
         return {

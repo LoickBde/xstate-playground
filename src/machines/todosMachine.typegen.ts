@@ -56,7 +56,9 @@ export interface Typegen0 {
     resetFormInput: "done.invoke.todos.creatingTodos.savingTodo:invocation[0]";
   };
   eventsCausingDelays: {};
-  eventsCausingGuards: {};
+  eventsCausingGuards: {
+    hasTodos: "done.invoke.todos.loadingTodos:invocation[0]";
+  };
   eventsCausingServices: {
     deleteTodo: "DELETE";
     loadTodos:

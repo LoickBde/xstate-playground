@@ -1,7 +1,7 @@
 import { useMachine } from "@xstate/react";
 import { todosMachine } from "../../machines/todosMachine";
 
-const todos = new Set<string>(["Learn xstate", "Drink beers"]);
+const todos = new Set<string>([]);
 
 export const Todos = () => {
   const [stateTodos, sendTodos] = useMachine(todosMachine, {
@@ -13,7 +13,7 @@ export const Todos = () => {
         todos.add(context.newTodoFormInput);
       },
       deleteTodo: async (context, event) => {
-        throw new Error("throwing error manually");
+        // throw new Error("throwing error manually");
         todos.delete(event.todo);
       },
     },
